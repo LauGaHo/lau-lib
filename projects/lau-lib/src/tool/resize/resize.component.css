@@ -1,0 +1,55 @@
+.resize-point {
+  position: absolute;
+  height: 9px;
+  width: 9px;
+  border: 1px #000000 solid;
+  background: #B2E4C8;
+}
+
+.resize-point-n {
+  left: calc(50% - 5px);
+  top: -5px;
+  cursor: n-resize;
+}
+
+.resize-point-s {
+  left: calc(50% - 5px);
+  bottom: -5px;
+  cursor: s-resize;
+}
+
+.resize-point-w {
+  left: -5px;
+  top: calc(50% - 5px);
+  cursor: w-resize;
+}
+
+.resize-point-e {
+  right: -5px;
+  top: calc(50% - 5px);
+  cursor: e-resize;
+}
+
+.resize-point-nw {
+  left: -5px;
+  top: -5px;
+  cursor: nw-resize;
+}
+
+.resize-point-sw {
+  left: -5px;
+  bottom: -5px;
+  cursor: sw-resize;
+}
+
+.resize-point-ne {
+  right: -5px;
+  top: -5px;
+  cursor: ne-resize;
+}
+
+.resize-point-se {
+  right: -5px;
+  bottom: -5px;
+  cursor: se-resize;
+}

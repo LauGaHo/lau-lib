@@ -1,0 +1,160 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "lau-lib": {
+      "projectType": "library",
+      "root": "projects/lau-lib",
+      "sourceRoot": "projects/lau-lib/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/lau-lib/tsconfig.lib.json",
+            "project": "projects/lau-lib/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/lau-lib/src/test.ts",
+            "tsConfig": "projects/lau-lib/tsconfig.spec.json",
+            "karmaConfig": "projects/lau-lib/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/lau-lib/tsconfig.lib.json",
+              "projects/lau-lib/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "lau-lib-demo": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "projects/lau-lib-demo",
+      "sourceRoot": "projects/lau-lib-demo/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/lau-lib-demo",
+            "index": "projects/lau-lib-demo/src/index.html",
+            "main": "projects/lau-lib-demo/src/main.ts",
+            "polyfills": "projects/lau-lib-demo/src/polyfills.ts",
+            "tsConfig": "projects/lau-lib-demo/tsconfig.app.json",
+            "aot": false,
+            "assets": [
+              "projects/lau-lib-demo/src/favicon.ico",
+              "projects/lau-lib-demo/src/assets"
+            ],
+            "styles": [
+              "projects/lau-lib-demo/src/styles.css"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/lau-lib-demo/src/environments/environment.ts",
+                  "with": "projects/lau-lib-demo/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "lau-lib-demo:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "lau-lib-demo:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "lau-lib-demo:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/lau-lib-demo/src/test.ts",
+            "polyfills": "projects/lau-lib-demo/src/polyfills.ts",
+            "tsConfig": "projects/lau-lib-demo/tsconfig.spec.json",
+            "karmaConfig": "projects/lau-lib-demo/karma.conf.js",
+            "assets": [
+              "projects/lau-lib-demo/src/favicon.ico",
+              "projects/lau-lib-demo/src/assets"
+            ],
+            "styles": [
+              "projects/lau-lib-demo/src/styles.css"
+            ],
+            "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/lau-lib-demo/tsconfig.app.json",
+              "projects/lau-lib-demo/tsconfig.spec.json",
+              "projects/lau-lib-demo/e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "projects/lau-lib-demo/e2e/protractor.conf.js",
+            "devServerTarget": "lau-lib-demo:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "lau-lib-demo:serve:production"
+            }
+          }
+        }
+      }
+    }},
+  "defaultProject": "lau-lib-demo"
+}

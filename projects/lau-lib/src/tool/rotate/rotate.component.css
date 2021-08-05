@@ -1,0 +1,7 @@
+.rotate-handle {
+  position: absolute;
+  left: calc(50% - 8px);
+  top: -30px;
+  height: 9px;
+  width: 9px;
+}

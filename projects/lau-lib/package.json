@@ -1,0 +1,10 @@
+{
+  "name": "lau-lib",
+  "version": "0.0.3",
+  "peerDependencies": {
+    "@angular/common": "^8.2.0",
+    "@angular/core": "^8.2.0",
+    "rxjs": "~6.4.0",
+    "ng-zorro-antd": "8.1.2"
+  }
+}

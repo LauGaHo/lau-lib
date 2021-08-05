@@ -1,0 +1,48 @@
+.drag-handle::before {
+  position: absolute;
+  content: '';
+  left: -5px;
+  bottom: -5px;
+  top: -5px;
+  right: -5px;
+}
+
+.drag-handle-n {
+  position: absolute;
+  left: 0;
+  top: -1px;
+  height: 1px;
+  width: calc(100% + 1px);
+  background: #000000;
+  cursor: all-scroll;
+}
+
+.drag-handle-s {
+  position: absolute;
+  left: -1px;
+  bottom: -1px;
+  height: 1px;
+  width: calc(100% + 1px);
+  background: #000000;
+  cursor: all-scroll;
+}
+
+.drag-handle-w {
+  position: absolute;
+  left: -1px;
+  top: -1px;
+  width: 1px;
+  height: calc(100% + 1px);
+  background: #000000;
+  cursor: all-scroll;
+}
+
+.drag-handle-e {
+  position: absolute;
+  right: -1px;
+  top: 0;
+  width: 1px;
+  height: calc(100% + 1px);
+  background: #000000;
+  cursor: all-scroll;
+}
