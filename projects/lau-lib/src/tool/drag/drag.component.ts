@@ -18,10 +18,10 @@ export class DragComponent implements OnInit {
 
   }
 
-  @ViewChild('nDrag', {static: true}) public nDrag: ElementRef<HTMLDivElement>;
-  @ViewChild('sDrag', {static: true}) public sDrag: ElementRef<HTMLDivElement>;
-  @ViewChild('wDrag', {static: true}) public wDrag: ElementRef<HTMLDivElement>;
-  @ViewChild('eDrag', {static: true}) public eDrag: ElementRef<HTMLDivElement>;
+  @ViewChild('nDrag', {static: true}) private nDrag: ElementRef<HTMLDivElement>;
+  @ViewChild('sDrag', {static: true}) private sDrag: ElementRef<HTMLDivElement>;
+  @ViewChild('wDrag', {static: true}) private wDrag: ElementRef<HTMLDivElement>;
+  @ViewChild('eDrag', {static: true}) private eDrag: ElementRef<HTMLDivElement>;
 
   @Input() public draggable: boolean = true;
   @Input() public showHandle: boolean = false;
@@ -37,18 +37,6 @@ export class DragComponent implements OnInit {
    * 所以将元素拖拽相关代码放在ngZone之外运行
    */
   ngOnInit(): void {
-    /*this.ngZone.runOutsideAngular(() => {
-      if (!this.showHandle) {
-        this.dragElement.addEventListener("mousedown", this.handleMousedown);
-      }
-      else {
-        this.nDrag.nativeElement.addEventListener("mousedown", this.handleMousedown);
-        this.sDrag.nativeElement.addEventListener("mousedown", this.handleMousedown);
-        this.wDrag.nativeElement.addEventListener("mousedown", this.handleMousedown);
-        this.eDrag.nativeElement.addEventListener("mousedown", this.handleMousedown);
-      }
-    });*/
-
     this.ngZone.runOutsideAngular(() => {
       if (!this.showHandle) {
         this.subscribe([this.dragElement]);
@@ -62,7 +50,7 @@ export class DragComponent implements OnInit {
    * 元素的事件流订阅
    * @param elements
    */
-  public subscribe = (elements: HTMLElement[]) => {
+  private subscribe = (elements: HTMLElement[]) => {
     if (!this.draggable) return;
     for (let element of elements) {
       const mousedown = fromEvent(element, "mousedown");
@@ -106,42 +94,4 @@ export class DragComponent implements OnInit {
     }
   }
 
-  /**
-   * Mousedown触发函数逻辑
-   * @param e
-   */
-  /*public handleMousedown = (e) => {
-    e.stopPropagation();
-    e.preventDefault();
-    if (!this.draggable) return;
-    let x0 = e.clientX;
-    let y0 = e.clientY;
-
-    let mousemoveFunc = (ev) => {
-      ev.stopPropagation();
-      ev.preventDefault();
-      let deltaX = ev.clientX - x0;
-      let deltaY = ev.clientY - y0;
-      x0 = ev.clientX;
-      y0 = ev.clientY;
-      this.dragMoving(deltaX, deltaY);
-    };
-    document.addEventListener("mousemove", mousemoveFunc);
-
-    let mouseupFunc = (ev) => {
-      ev.stopPropagation();
-      ev.preventDefault();
-      this.dragEnd();
-      document.removeEventListener("mousemove", mousemoveFunc);
-    }
-    document.addEventListener("mouseup", mouseupFunc, {once: true});
-  }*/
-
-  /**
-   * Click触发函数逻辑
-   * @param e
-   */
-  public handleClick(e) {
-    this.clickHandle.emit(e);
-  }
 }

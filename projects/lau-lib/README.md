@@ -8,10 +8,6 @@
 export declare class DragComponent implements OnInit {
     private ngZone;
     constructor(ngZone: NgZone);
-    nDrag: ElementRef<HTMLDivElement>;
-    sDrag: ElementRef<HTMLDivElement>;
-    wDrag: ElementRef<HTMLDivElement>;
-    eDrag: ElementRef<HTMLDivElement>;
     draggable: boolean;
     // Input 属性：是否需要展示方形四边的拖曳手柄，如设置了 contentEditable 的元素需要拖曳手柄
     showHandle: boolean;
@@ -30,16 +26,6 @@ export declare class DragComponent implements OnInit {
      * 所以将元素拖拽相关代码放在ngZone之外运行
      */
     ngOnInit(): void;
-    /**
-     * 元素的事件流订阅
-     * @param elements
-     */
-    subscribe: (elements: HTMLElement[]) => void;
-    /**
-     * Click触发函数逻辑
-     * @param e
-     */
-    handleClick(e: any): void;
 }
 ```
 
@@ -127,15 +113,6 @@ export class ElementComponent {
 export declare class ResizeComponent implements OnInit {
     private ngZone;
     constructor(ngZone: NgZone);
-    // 对应各个缩放手柄的引用
-    nResize: ElementRef<HTMLDivElement>;
-    sResize: ElementRef<HTMLDivElement>;
-    wResize: ElementRef<HTMLDivElement>;
-    eResize: ElementRef<HTMLDivElement>;
-    nwResize: ElementRef<HTMLDivElement>;
-    swResize: ElementRef<HTMLDivElement>;
-    neResize: ElementRef<HTMLDivElement>;
-    seResize: ElementRef<HTMLDivElement>;
     // Input 属性：缩放过程的箭头函数，用于扩展功能
     resizeMoving: (position: {
         x: number;
@@ -156,319 +133,14 @@ export declare class ResizeComponent implements OnInit {
     resizeElement: HTMLElement;
     // Input 属性：进行拖曳缩放的元素所在的容器元素
     canvasElement: HTMLElement;
-    angleToCursor: any[];
-    elementInfos: {
-        element: HTMLElement;
-        position: string;
-    }[];
-    initResizeToAngle: Map<ElementRef<HTMLDivElement>, number>;
     /**
      * Resize逻辑放在NgZone之外，防止频繁触发Angular的变更检测
      */
     ngOnInit(): void;
     /**
-     * 元素订阅事件函数
-     * @param elementInfos
+     * 可供调用 API，根据元素旋转角度调整各个 cursor 的指向
      */
-    subscribe: (elementInfos: {
-        element: HTMLElement;
-        position: string;
-    }[]) => void;
-    /**
-     * 鼠标点击事件
-     * @param e MouseEvent
-     * @param position 点击的小方块的位置
-     */
-    /**
-     * 拖拽左上角
-     * @param rotate 旋转的角度
-     * @param curPosition MouseMove产生的位置
-     * @param proportion Element对应的比例
-     * @param pointInfo 当中包含symmetricPoint(对称点位置)、center(中点位置)、curPoint(MouseDown点击的位置)
-     * @param callback 将计算完的值进行设置的回调函数
-     */
-    calculateLeftTop: (rotate: number, curPosition: {
-        x: number;
-        y: number;
-    }, proportion: number, pointInfo: {
-        symmetricPoint: any;
-        center: any;
-        curPoint: any;
-    }, callback: (position: {
-        x: number;
-        y: number;
-    }, size: {
-        width: number;
-        height: number;
-    }) => void) => void;
-    /**
-     * 拖拽右上角
-     * @param rotate 旋转角度
-     * @param curPosition MouseMove产生的位置
-     * @param proportion 缩放比例
-     * @param pointInfo 当中包含symmetricPoint(对称点位置)、center(中点位置)、curPoint(MouseDown点击的位置)
-     * @param callback 将计算完的值进行设置的回调函数
-     */
-    calculateRightTop: (rotate: number, curPosition: {
-        x: number;
-        y: number;
-    }, proportion: number, pointInfo: {
-        symmetricPoint: any;
-        center: any;
-        curPoint: any;
-    }, callback: (position: {
-        x: number;
-        y: number;
-    }, size: {
-        width: number;
-        height: number;
-    }) => void) => void;
-    /**
-     * 拖拽右下角
-     * @param rotate 旋转角度
-     * @param curPosition MouseMove产生的位置
-     * @param proportion 缩放比例
-     * @param pointInfo 当中包含symmetricPoint(对称点位置)、center(中点位置)、curPoint(MouseDown点击的位置)
-     * @param callback 将计算完的值进行设置的回调函数
-     */
-    calculateRightBottom: (rotate: number, curPosition: {
-        x: number;
-        y: number;
-    }, proportion: number, pointInfo: {
-        symmetricPoint: any;
-        center: any;
-        curPoint: any;
-    }, callback: (position: {
-        x: number;
-        y: number;
-    }, size: {
-        width: number;
-        height: number;
-    }) => void) => void;
-    /**
-     * 拖拽左下角
-     * @param rotate 旋转角度
-     * @param curPosition MouseMove产生的位置
-     * @param proportion 缩放比例
-     * @param pointInfo 当中包含symmetricPoint(对称点位置)、center(中点位置)、curPoint(MouseDown点击的位置)
-     * @param callback 将计算完的值进行设置的回调函数
-     */
-    calculateLeftBottom: (rotate: number, curPosition: {
-        x: number;
-        y: number;
-    }, proportion: number, pointInfo: {
-        symmetricPoint: any;
-        center: any;
-        curPoint: any;
-    }, callback: (position: {
-        x: number;
-        y: number;
-    }, size: {
-        width: number;
-        height: number;
-    }) => void) => void;
-    /**
-     * 拖拽正上方
-     * @param rotate 旋转的角度
-     * @param curPosition MouseMove的位置信息
-     * @param proportion 缩放比例
-     * @param pointInfo 当中包含symmetricPoint(对称点位置)、center(中点位置)、curPoint(MouseDown点击的位置)
-     * @param callback 将计算完的值进行设置的回调函数
-     */
-    calculateTop: (rotate: number, curPosition: {
-        x: number;
-        y: number;
-    }, proportion: number, pointInfo: {
-        symmetricPoint: any;
-        center: any;
-        curPoint: any;
-    }, callback: (position: {
-        x: number;
-        y: number;
-    }, size: {
-        width: number;
-        height: number;
-    }) => void) => void;
-    /**
-     * 拖拽右方
-     * @param rotate 旋转的角度
-     * @param curPosition MouseMove的位置信息
-     * @param proportion 缩放比例
-     * @param pointInfo 当中包含symmetricPoint(对称点位置)、center(中点位置)、curPoint(MouseDown点击的位置)
-     * @param callback 将计算完的值进行设置的回调函数
-     */
-    calculateRight: (rotate: number, curPosition: {
-        x: number;
-        y: number;
-    }, proportion: number, pointInfo: {
-        symmetricPoint: any;
-        center: any;
-        curPoint: any;
-    }, callback: (position: {
-        x: number;
-        y: number;
-    }, size: {
-        width: number;
-        height: number;
-    }) => void) => void;
-    /**
-     * 拖拽下方
-     * @param rotate 旋转的角度
-     * @param curPosition MouseMove的位置信息
-     * @param proportion 缩放比例
-     * @param pointInfo 当中包含symmetricPoint(对称点位置)、center(中点位置)、curPoint(MouseDown点击的位置)
-     * @param callback 将计算完的值进行设置的回调函数
-     */
-    calculateBottom: (rotate: number, curPosition: {
-        x: number;
-        y: number;
-    }, proportion: number, pointInfo: {
-        symmetricPoint: any;
-        center: any;
-        curPoint: any;
-    }, callback: (position: {
-        x: number;
-        y: number;
-    }, size: {
-        width: number;
-        height: number;
-    }) => void) => void;
-    /**
-     * 拖拽左方
-     * @param rotate 旋转的角度
-     * @param curPosition MouseMove的位置信息
-     * @param proportion 缩放比例
-     * @param pointInfo 当中包含symmetricPoint(对称点位置)、center(中点位置)、curPoint(MouseDown点击的位置)
-     * @param callback 将计算完的值进行设置的回调函数
-     */
-    calculateLeft: (rotate: number, curPosition: {
-        x: number;
-        y: number;
-    }, proportion: number, pointInfo: {
-        symmetricPoint: any;
-        center: any;
-        curPoint: any;
-    }, callback: (position: {
-        x: number;
-        y: number;
-    }, size: {
-        width: number;
-        height: number;
-    }) => void) => void;
-    func: {
-        n: (rotate: number, curPosition: {
-            x: number;
-            y: number;
-        }, proportion: number, pointInfo: {
-            symmetricPoint: any;
-            center: any;
-            curPoint: any;
-        }, callback: (position: {
-            x: number;
-            y: number;
-        }, size: {
-            width: number;
-            height: number;
-        }) => void) => void;
-        s: (rotate: number, curPosition: {
-            x: number;
-            y: number;
-        }, proportion: number, pointInfo: {
-            symmetricPoint: any;
-            center: any;
-            curPoint: any;
-        }, callback: (position: {
-            x: number;
-            y: number;
-        }, size: {
-            width: number;
-            height: number;
-        }) => void) => void;
-        w: (rotate: number, curPosition: {
-            x: number;
-            y: number;
-        }, proportion: number, pointInfo: {
-            symmetricPoint: any;
-            center: any;
-            curPoint: any;
-        }, callback: (position: {
-            x: number;
-            y: number;
-        }, size: {
-            width: number;
-            height: number;
-        }) => void) => void;
-        e: (rotate: number, curPosition: {
-            x: number;
-            y: number;
-        }, proportion: number, pointInfo: {
-            symmetricPoint: any;
-            center: any;
-            curPoint: any;
-        }, callback: (position: {
-            x: number;
-            y: number;
-        }, size: {
-            width: number;
-            height: number;
-        }) => void) => void;
-        nw: (rotate: number, curPosition: {
-            x: number;
-            y: number;
-        }, proportion: number, pointInfo: {
-            symmetricPoint: any;
-            center: any;
-            curPoint: any;
-        }, callback: (position: {
-            x: number;
-            y: number;
-        }, size: {
-            width: number;
-            height: number;
-        }) => void) => void;
-        ne: (rotate: number, curPosition: {
-            x: number;
-            y: number;
-        }, proportion: number, pointInfo: {
-            symmetricPoint: any;
-            center: any;
-            curPoint: any;
-        }, callback: (position: {
-            x: number;
-            y: number;
-        }, size: {
-            width: number;
-            height: number;
-        }) => void) => void;
-        sw: (rotate: number, curPosition: {
-            x: number;
-            y: number;
-        }, proportion: number, pointInfo: {
-            symmetricPoint: any;
-            center: any;
-            curPoint: any;
-        }, callback: (position: {
-            x: number;
-            y: number;
-        }, size: {
-            width: number;
-            height: number;
-        }) => void) => void;
-        se: (rotate: number, curPosition: {
-            x: number;
-            y: number;
-        }, proportion: number, pointInfo: {
-            symmetricPoint: any;
-            center: any;
-            curPoint: any;
-        }, callback: (position: {
-            x: number;
-            y: number;
-        }, size: {
-            width: number;
-            height: number;
-        }) => void) => void;
-    };
+    adjustCursorAngle: (rotate: number) => void;
 }
 ```
 
@@ -518,7 +190,7 @@ export declare class RotateComponent implements OnInit {
     private ngZone;
     constructor(ngZone: NgZone);
     ngOnInit(): void;
-    rotateHandle: ElementRef<HTMLDivElement>;
+    // Input 属性
     selected: boolean;
     // Input 属性
     rotatable: boolean;
@@ -528,10 +200,6 @@ export declare class RotateComponent implements OnInit {
     rotateMoving: (deg: number) => void;
     // Input 属性
     rotateEnd: () => void;
-    /**
-     * 订阅 mousedown、mousemove、mouseup 事件，并且进行对应处理
-     */
-    subscribe: () => void;
 }
 ```
 

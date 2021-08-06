@@ -21,7 +21,7 @@ export class RotateComponent implements OnInit {
     this.ngZone.runOutsideAngular(this.subscribe);
   }
 
-  @ViewChild("rotateHandle", {static: true}) public rotateHandle: ElementRef<HTMLDivElement>;
+  @ViewChild("rotateHandle", {static: true}) private rotateHandle: ElementRef<HTMLDivElement>;
 
   @Input() public selected: boolean;
   @Input() public rotatable: boolean = true;
@@ -32,7 +32,7 @@ export class RotateComponent implements OnInit {
   /**
    * 订阅 mousedown、mousemove、mouseup 事件，并且进行对应处理
    */
-  public subscribe = () => {
+  private subscribe = () => {
     const mousedown = fromEvent(this.rotateHandle.nativeElement, "mousedown");
     const mousemove = fromEvent(document, "mousemove");
     const mouseup = fromEvent(document, "mouseup");

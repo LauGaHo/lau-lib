@@ -19,20 +19,20 @@ export class ResizeComponent implements OnInit {
   ) {
   }
 
-  @ViewChild('nResize', {static: true}) public nResize: ElementRef<HTMLDivElement>;
-  @ViewChild('sResize', {static: true}) public sResize: ElementRef<HTMLDivElement>;
-  @ViewChild('wResize', {static: true}) public wResize: ElementRef<HTMLDivElement>;
-  @ViewChild('eResize', {static: true}) public eResize: ElementRef<HTMLDivElement>;
-  @ViewChild('nwResize', {static: true}) public nwResize: ElementRef<HTMLDivElement>;
-  @ViewChild('swResize', {static: true}) public swResize: ElementRef<HTMLDivElement>;
-  @ViewChild('neResize', {static: true}) public neResize: ElementRef<HTMLDivElement>;
-  @ViewChild('seResize', {static: true}) public seResize: ElementRef<HTMLDivElement>;
+  @ViewChild('nResize', {static: true}) private nResize: ElementRef<HTMLDivElement>;
+  @ViewChild('sResize', {static: true}) private sResize: ElementRef<HTMLDivElement>;
+  @ViewChild('wResize', {static: true}) private wResize: ElementRef<HTMLDivElement>;
+  @ViewChild('eResize', {static: true}) private eResize: ElementRef<HTMLDivElement>;
+  @ViewChild('nwResize', {static: true}) private nwResize: ElementRef<HTMLDivElement>;
+  @ViewChild('swResize', {static: true}) private swResize: ElementRef<HTMLDivElement>;
+  @ViewChild('neResize', {static: true}) private neResize: ElementRef<HTMLDivElement>;
+  @ViewChild('seResize', {static: true}) private seResize: ElementRef<HTMLDivElement>;
 
   // 宿主元素对缩放后的位置和大小处理的箭头函数
   @Input() public resizeMoving: (position: { x: number, y: number }, size: { width: number, height: number }) => void;
   // 缩放结束后的箭头函数
   @Input() public resizeEnd: () => void;
-  // selected为true才显示对应的小方块，selected为false不显示对应小方块
+  // selected 为 true 才显示对应的小方块，selected 为 false 不显示对应小方块
   @Input() public selected: boolean;
   // 每个缩放小方块对应的标识
   @Input() public positions: string[];
@@ -40,11 +40,11 @@ export class ResizeComponent implements OnInit {
   @Input() public resizable: boolean = true;
   // 拖拽放大的宿主元素
   @Input() public resizeElement: HTMLElement;
-  // Element所在的画布元素，例如：page-config-panel中的div
+  // Element 所在的画布元素，例如：page-config-panel中的 div
   @Input() public canvasElement: HTMLElement;
 
   // cursor和对应的角度范围
-  public angleToCursor: any[] = [
+  private angleToCursor: any[] = [
     { start: 338, end: 23, cursor: 'nw-resize' },
     { start: 23, end: 68, cursor: 'n-resize' },
     { start: 68, end: 113, cursor: 'ne-resize' },
@@ -55,9 +55,9 @@ export class ResizeComponent implements OnInit {
     { start: 293, end: 338, cursor: 'w-resize' },
   ];
   // 拖曳缩放元素列表
-  public elementInfos: {element: HTMLElement, position: string}[];
+  private elementInfos: {element: HTMLElement, position: string}[];
   // 小方框实体跟其初始角度的一个Map
-  public initResizeToAngle: Map<ElementRef<HTMLDivElement>, number>;
+  private initResizeToAngle: Map<ElementRef<HTMLDivElement>, number>;
 
   /**
    * Resize逻辑放在NgZone之外，防止频繁触发Angular的变更检测
@@ -65,15 +65,6 @@ export class ResizeComponent implements OnInit {
   ngOnInit(): void {
     // 在ngZone之外绑定事件
     this.ngZone.runOutsideAngular(() => {
-      /*this.nResize.nativeElement.addEventListener("mousedown", e => this.mousedownFunc(e, 'n'));
-      this.sResize.nativeElement.addEventListener("mousedown", e => this.mousedownFunc(e, 's'));
-      this.wResize.nativeElement.addEventListener("mousedown", e => this.mousedownFunc(e, 'w'));
-      this.eResize.nativeElement.addEventListener("mousedown", e => this.mousedownFunc(e, 'e'));
-      this.nwResize.nativeElement.addEventListener("mousedown", e => this.mousedownFunc(e, 'nw'));
-      this.swResize.nativeElement.addEventListener("mousedown", e => this.mousedownFunc(e, 'sw'));
-      this.neResize.nativeElement.addEventListener("mousedown", e => this.mousedownFunc(e, 'ne'));
-      this.seResize.nativeElement.addEventListener("mousedown", e => this.mousedownFunc(e, 'se'));*/
-
       this.elementInfos = [
         {element: this.nResize.nativeElement, position: 'n'},
         {element: this.sResize.nativeElement, position: 's'},
@@ -102,10 +93,32 @@ export class ResizeComponent implements OnInit {
   }
 
   /**
+   * 根据传入元素旋转的角度，对应调整每个 Handle 的 cursor 的指向
+   * @param rotate
+   */
+  public adjustCursorAngle: (rotate: number) => void = (rotate: number) => {
+    // 根据元素是否有旋转角度，来调整每个 Handle 对应 cursor 的方向
+    this.initResizeToAngle.forEach((value, key) => {
+      const angle = (rotate + 360 + value) % 360;
+      for (let angleCursor of this.angleToCursor) {
+        if (angle < 23 || angle >= 338) {
+          key.nativeElement.style.cursor = angleCursor.cursor;
+          break;
+        }
+
+        if (angleCursor.start <= angle && angle < angleCursor.end) {
+          key.nativeElement.style.cursor = angleCursor.cursor;
+          break;
+        }
+      }
+    });
+  }
+
+  /**
    * 元素订阅事件函数
    * @param elementInfos
    */
-  public subscribe = (elementInfos: {element: HTMLElement, position: string}[]) => {
+  private subscribe = (elementInfos: {element: HTMLElement, position: string}[]) => {
     for (let elementInfo of elementInfos) {
       const mousedown = fromEvent(elementInfo.element, "mousedown");
       const mousemove = fromEvent(document, "mousemove");
@@ -193,70 +206,6 @@ export class ResizeComponent implements OnInit {
   }
 
   /**
-   * 鼠标点击事件
-   * @param e MouseEvent
-   * @param position 点击的小方块的位置
-   */
-  /*public mousedownFunc = (e, position: string) => {
-    e.stopPropagation();
-    e.preventDefault();
-    const rect = this.resizeElement.getBoundingClientRect();
-    // 获取画布
-    const canvasRect = this.canvasElement.getBoundingClientRect();
-    // 获取元素中心点
-    const center = {
-      x: (rect.left + rect.width / 2) - canvasRect.left,
-      y: (rect.top + rect.height / 2) - canvasRect.top,
-    };
-    // 当前点击的坐标
-    const curPoint = {
-      x: e.clientX - canvasRect.left,
-      y: e.clientY - canvasRect.top,
-    };
-    // 获取对称点坐标
-    const symmetricPoint = {
-      x: center.x - (curPoint.x - center.x),
-      y: center.y - (curPoint.y - center.y),
-    }
-    // 获取对应Element的长宽比例
-    const proportion = this.resizeElement.offsetWidth / this.resizeElement.offsetHeight;
-    // 获取旋转角度
-    const transform: string = this.resizeElement.style.transform;
-    let rotate: number;
-    let regExp = /(-)?[0-9]+([.][0-9]+)?(deg)/g;
-    if (regExp.test(transform)) {
-      rotate = parseFloat(transform.match(regExp)[0]);
-    }
-
-    const mousemoveFunc = (event: MouseEvent) => {
-      event.stopPropagation();
-      event.preventDefault();
-      const curPosition = {
-        x: event.clientX - canvasRect.left,
-        y: event.clientY - canvasRect.top,
-      };
-
-      const pointInfo = {
-        symmetricPoint: symmetricPoint,
-        center: center,
-        curPoint: curPoint
-      };
-
-      this.func[position](rotate, curPosition, proportion, pointInfo, this.resizeMoving);
-
-    }
-    document.addEventListener("mousemove", mousemoveFunc);
-
-    let mouseupFunc = (ev) => {
-      ev.stopPropagation();
-      ev.preventDefault();
-      this.resizeEnd();
-      document.removeEventListener("mousemove", mousemoveFunc);
-    }
-    document.addEventListener("mouseup", mouseupFunc, {once: true});
-  }*/
-
-  /**
    * 拖拽左上角
    * @param rotate 旋转的角度
    * @param curPosition MouseMove产生的位置
@@ -264,7 +213,7 @@ export class ResizeComponent implements OnInit {
    * @param pointInfo 当中包含symmetricPoint(对称点位置)、center(中点位置)、curPoint(MouseDown点击的位置)
    * @param callback 将计算完的值进行设置的回调函数
    */
-  public calculateLeftTop = (rotate: number,
+  private calculateLeftTop = (rotate: number,
                              curPosition: { x: number, y: number },
                              proportion: number,
                              pointInfo: { symmetricPoint: any, center: any, curPoint: any },
@@ -312,7 +261,7 @@ export class ResizeComponent implements OnInit {
    * @param pointInfo 当中包含symmetricPoint(对称点位置)、center(中点位置)、curPoint(MouseDown点击的位置)
    * @param callback 将计算完的值进行设置的回调函数
    */
-  public calculateRightTop = (rotate: number,
+  private calculateRightTop = (rotate: number,
                               curPosition: { x: number, y: number },
                               proportion: number,
                               pointInfo: { symmetricPoint: any, center: any, curPoint: any },
@@ -352,7 +301,7 @@ export class ResizeComponent implements OnInit {
    * @param pointInfo 当中包含symmetricPoint(对称点位置)、center(中点位置)、curPoint(MouseDown点击的位置)
    * @param callback 将计算完的值进行设置的回调函数
    */
-  public calculateRightBottom = (rotate: number,
+  private calculateRightBottom = (rotate: number,
                                  curPosition: { x: number, y: number },
                                  proportion: number,
                                  pointInfo: { symmetricPoint: any, center: any, curPoint: any },
@@ -392,7 +341,7 @@ export class ResizeComponent implements OnInit {
    * @param pointInfo 当中包含symmetricPoint(对称点位置)、center(中点位置)、curPoint(MouseDown点击的位置)
    * @param callback 将计算完的值进行设置的回调函数
    */
-  public calculateLeftBottom = (rotate: number,
+  private calculateLeftBottom = (rotate: number,
                                 curPosition: { x: number, y: number },
                                 proportion: number,
                                 pointInfo: { symmetricPoint: any, center: any, curPoint: any },
@@ -432,7 +381,7 @@ export class ResizeComponent implements OnInit {
    * @param pointInfo 当中包含symmetricPoint(对称点位置)、center(中点位置)、curPoint(MouseDown点击的位置)
    * @param callback 将计算完的值进行设置的回调函数
    */
-  public calculateTop = (rotate: number,
+  private calculateTop = (rotate: number,
                          curPosition: { x: number, y: number },
                          proportion: number,
                          pointInfo: { symmetricPoint: any, center: any, curPoint: any },
@@ -470,7 +419,7 @@ export class ResizeComponent implements OnInit {
    * @param pointInfo 当中包含symmetricPoint(对称点位置)、center(中点位置)、curPoint(MouseDown点击的位置)
    * @param callback 将计算完的值进行设置的回调函数
    */
-  public calculateRight = (rotate: number,
+  private calculateRight = (rotate: number,
                            curPosition: { x: number, y: number },
                            proportion: number,
                            pointInfo: { symmetricPoint: any, center: any, curPoint: any },
@@ -506,7 +455,7 @@ export class ResizeComponent implements OnInit {
    * @param pointInfo 当中包含symmetricPoint(对称点位置)、center(中点位置)、curPoint(MouseDown点击的位置)
    * @param callback 将计算完的值进行设置的回调函数
    */
-  public calculateBottom = (rotate: number,
+  private calculateBottom = (rotate: number,
                             curPosition: { x: number, y: number },
                             proportion: number,
                             pointInfo: { symmetricPoint: any, center: any, curPoint: any },
@@ -542,7 +491,7 @@ export class ResizeComponent implements OnInit {
    * @param pointInfo 当中包含symmetricPoint(对称点位置)、center(中点位置)、curPoint(MouseDown点击的位置)
    * @param callback 将计算完的值进行设置的回调函数
    */
-  public calculateLeft = (rotate: number,
+  private calculateLeft = (rotate: number,
                           curPosition: { x: number, y: number },
                           proportion: number,
                           pointInfo: { symmetricPoint: any, center: any, curPoint: any },
@@ -570,7 +519,7 @@ export class ResizeComponent implements OnInit {
     }
   }
 
-  public func = {
+  private func = {
     n: this.calculateTop,
     s: this.calculateBottom,
     w: this.calculateLeft,

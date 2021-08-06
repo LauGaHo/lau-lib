@@ -1,15 +1,15 @@
 <div #wDrag class="drag-handle drag-handle-w"
      [style.display]="showHandle && selected ? 'block' : 'none'"
-     (click)="handleClick($event)"></div>
+     (click)="this.clickHandle.emit($event)"></div>
 
 <div #eDrag class="drag-handle drag-handle-e"
      [style.display]="showHandle && selected ? 'block' : 'none'"
-     (click)="handleClick($event)"></div>
+     (click)="this.clickHandle.emit($event)"></div>
 
 <div #nDrag class="drag-handle drag-handle-n"
      [style.display]="showHandle && selected ? 'block' : 'none'"
-     (click)="handleClick($event)"></div>
+     (click)="this.clickHandle.emit($event)"></div>
 
 <div #sDrag class="drag-handle drag-handle-s"
      [style.display]="showHandle && selected ? 'block' : 'none'"
-     (click)="handleClick($event)"></div>
+     (click)="this.clickHandle.emit($event)"></div>
