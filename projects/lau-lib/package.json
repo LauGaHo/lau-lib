@@ -1,6 +1,18 @@
 {
   "name": "lau-lib",
-  "version": "0.0.6",
+  "version": "0.0.8",
+  "description": "Angular drag, resize, rotate library(Angular 拖曳移动、拖曳缩放、拖曳旋转工具库)",
+  "keywords": [
+    "angular",
+    "drag",
+    "resize",
+    "rotate",
+    "utils",
+    "Angular 拖曳移动",
+    "Angular 拖曳缩放",
+    "Angular 拖曳旋转",
+    "Angular 工具库"
+  ],
   "peerDependencies": {
     "@angular/common": "^8.2.0",
     "@angular/core": "^8.2.0",
