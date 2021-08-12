@@ -1,7 +1,13 @@
 {
   "name": "lau-lib",
-  "version": "0.0.8",
+  "author": "laugaho",
+  "version": "0.0.9",
   "description": "Angular drag, resize, rotate library(Angular 拖曳移动、拖曳缩放、拖曳旋转工具库)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LauGaHo/lau-lib.git"
+  },
   "keywords": [
     "angular",
     "drag",
