@@ -19,6 +19,9 @@
     "Angular 拖曳旋转",
     "Angular 工具库"
   ],
+  "dependencies": {
+    "tslib": "^2.0.0"
+  },
   "peerDependencies": {
     "@angular/common": "^8.2.0",
     "@angular/core": "^8.2.0",
