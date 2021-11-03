@@ -1,0 +1,22 @@
+<div class="overlay" [ngStyle]="{'z-index': zIndex, 'background-color': bgColor}">
+  <nz-spin nzSimple [nzIndicator]="
+    status == 'loading' ? loadingTpl : status == 'success' ? successTpl : status == 'failed' ? failedTpl : status == 'info' ? infoTpl : warningTpl
+  "></nz-spin>
+  <span class="overlay-info" [ngStyle]="{'color': color, 'font-size': infoSize+'px'}">{{info}}</span>
+</div>
+
+<ng-template #loadingTpl>
+  <i nz-icon nzType="loading" [ngStyle]="{'font-size': infoSize*1.2+'px'}"></i>
+</ng-template>
+<ng-template #successTpl>
+  <i nz-icon nzType="check-circle" [ngStyle]="{'font-size': infoSize*1.2+'px'}"></i>
+</ng-template>
+<ng-template #failedTpl>
+  <i nz-icon nzType="close-circle" [ngStyle]="{'font-size': infoSize*1.2+'px'}"></i>
+</ng-template>
+<ng-template #infoTpl>
+  <i nz-icon nzType="exclamation-circle" [ngStyle]="{'font-size': infoSize*1.2+'px'}"></i>
+</ng-template>
+<ng-template #warningTpl>
+  <i nz-icon nzType="warning" [ngStyle]="{'font-size': infoSize*1.2+'px'}"></i>
+</ng-template>
