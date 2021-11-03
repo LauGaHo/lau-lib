@@ -7,18 +7,12 @@ import {Component, Input} from '@angular/core';
 })
 export class LoadingOverlayComponent {
 
-  @Input()
-  info: string = '加载中';
-  @Input()
-  zIndex: number = 2147483647;
-  @Input()
-  color: string = '#1890FF';
-  @Input()
-  bgColor: string = '#FFFFFF';
-  @Input()
-  infoSize: number = 40;
-  @Input()
-  status: LoadingOverlayStatus = 'loading';
+  @Input() info: string = '加载中';
+  @Input() zIndex: number = 2147483647;
+  @Input() color: string = '#FFFFFF';
+  @Input() bgColor: string = '#06164d';
+  @Input() infoSize: number = 40;
+  @Input() status: LoadingOverlayStatus = 'loading';
 
 }
 
