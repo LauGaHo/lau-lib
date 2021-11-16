@@ -1,4 +1,72 @@
-.drag-handle::before {
+.drag-handle-n {
+  left: 0;
+  top: -1px;
+  position: absolute;
+  height: 1px;
+  width: calc(100% + 1px);
+  background: #000000;
+  cursor: all-scroll;
+}
+.drag-handle-n::before {
+  position: absolute;
+  content: '';
+  left: -5px;
+  bottom: -5px;
+  top: -5px;
+  right: -5px;
+}
+.drag-handle-s {
+  left: -1px;
+  bottom: -1px;
+  position: absolute;
+  height: 1px;
+  width: calc(100% + 1px);
+  background: #000000;
+  cursor: all-scroll;
+}
+.drag-handle-s::before {
+  position: absolute;
+  content: '';
+  left: -5px;
+  bottom: -5px;
+  top: -5px;
+  right: -5px;
+}
+.drag-handle-w {
+  left: -1px;
+  top: -1px;
+  position: absolute;
+  height: 1px;
+  width: calc(100% + 1px);
+  background: #000000;
+  cursor: all-scroll;
+}
+.drag-handle-w::before {
+  position: absolute;
+  content: '';
+  left: -5px;
+  bottom: -5px;
+  top: -5px;
+  right: -5px;
+}
+.drag-handle-e {
+  right: -1px;
+  top: 0;
+  position: absolute;
+  height: 1px;
+  width: calc(100% + 1px);
+  background: #000000;
+  cursor: all-scroll;
+}
+.drag-handle-e::before {
+  position: absolute;
+  content: '';
+  left: -5px;
+  bottom: -5px;
+  top: -5px;
+  right: -5px;
+}
+/*.drag-handle::before {
   position: absolute;
   content: '';
   left: -5px;
@@ -45,4 +113,5 @@
   height: calc(100% + 1px);
   background: #000000;
   cursor: all-scroll;
-}
+}*/
+/*# sourceMappingURL=drag.component.css.map */

@@ -6,7 +6,7 @@ import {fromEvent} from "rxjs";
   selector: "tool-drag",
   templateUrl: "./drag.component.html",
   styleUrls: [
-    "./drag.component.css"
+    "./drag.component.less"
   ]
 })
 

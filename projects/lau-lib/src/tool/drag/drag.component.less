@@ -1,0 +1,95 @@
+@drag-handle-width: calc(100% + 1px);
+@drag-handle-height: 1px;
+@drag-handle-background: #000000;
+
+.drag-handle() {
+  position: absolute;
+  height: @drag-handle-height;
+  width: @drag-handle-width;
+  background: @drag-handle-background;
+  cursor: all-scroll;
+
+  &::before {
+    position: absolute;
+    content: '';
+    left: -5px;
+    bottom: -5px;
+    top: -5px;
+    right: -5px;
+  }
+}
+
+.drag-handle-n {
+  left: 0;
+  top: -1px;
+  .drag-handle();
+}
+
+.drag-handle-s {
+  left: -1px;
+  bottom: -1px;
+  .drag-handle();
+}
+
+.drag-handle-w {
+  left: -1px;
+  top: -1px;
+  .drag-handle();
+}
+
+.drag-handle-e {
+  right: -1px;
+  top: 0;
+  .drag-handle();
+}
+
+
+
+/*.drag-handle::before {
+  position: absolute;
+  content: '';
+  left: -5px;
+  bottom: -5px;
+  top: -5px;
+  right: -5px;
+}
+
+.drag-handle-n {
+  position: absolute;
+  left: 0;
+  top: -1px;
+  height: 1px;
+  width: calc(100% + 1px);
+  background: #000000;
+  cursor: all-scroll;
+}
+
+.drag-handle-s {
+  position: absolute;
+  left: -1px;
+  bottom: -1px;
+  height: 1px;
+  width: calc(100% + 1px);
+  background: #000000;
+  cursor: all-scroll;
+}
+
+.drag-handle-w {
+  position: absolute;
+  left: -1px;
+  top: -1px;
+  width: 1px;
+  height: calc(100% + 1px);
+  background: #000000;
+  cursor: all-scroll;
+}
+
+.drag-handle-e {
+  position: absolute;
+  right: -1px;
+  top: 0;
+  width: 1px;
+  height: calc(100% + 1px);
+  background: #000000;
+  cursor: all-scroll;
+}*/

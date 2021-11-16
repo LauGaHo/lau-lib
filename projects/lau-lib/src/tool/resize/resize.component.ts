@@ -8,7 +8,7 @@ import {concatAll, map, merge, mergeAll, take, takeUntil, throttleTime} from "rx
   selector: "tool-resize",
   templateUrl: "./resize.component.html",
   styleUrls: [
-    "./resize.component.css"
+    "./resize.component.less"
   ]
 })
 

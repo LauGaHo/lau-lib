@@ -8,7 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "build:lau-lib": "ng build lau-lib",
+    "build:lau-lib": "ng build --prod lau-lib",
     "pack:lau-lib": "cd dist/lau-lib && npm pack",
     "package:lau-lib": "npm run build:lau-lib && npm run pack:lau-lib"
   },

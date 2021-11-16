@@ -5,6 +5,11 @@
   "projects": {
     "lau-lib": {
       "projectType": "library",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "less"
+        }
+      },
       "root": "projects/lau-lib",
       "sourceRoot": "projects/lau-lib/src",
       "prefix": "lib",
@@ -64,7 +69,7 @@
               "projects/lau-lib-demo/src/assets"
             ],
             "styles": [
-              "projects/lau-lib-demo/src/styles.css"
+              "projects/lau-lib-demo/src/styles.less"
             ],
             "scripts": []
           },
@@ -127,7 +132,7 @@
               "projects/lau-lib-demo/src/assets"
             ],
             "styles": [
-              "projects/lau-lib-demo/src/styles.css"
+              "projects/lau-lib-demo/src/styles.less"
             ],
             "scripts": []
           }

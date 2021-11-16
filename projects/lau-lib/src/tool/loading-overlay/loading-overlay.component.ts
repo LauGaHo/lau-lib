@@ -3,7 +3,7 @@ import {Component, Input} from '@angular/core';
 @Component({
   selector: 'tool-loading-overlay',
   templateUrl: './loading-overlay.component.html',
-  styleUrls: ['./loading-overlay.component.css']
+  styleUrls: ['./loading-overlay.component.less']
 })
 export class LoadingOverlayComponent {
 

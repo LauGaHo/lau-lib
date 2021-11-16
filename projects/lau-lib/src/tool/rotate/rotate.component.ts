@@ -6,7 +6,7 @@ import {concatAll, map, merge, take, takeUntil} from "rxjs/operators";
   selector: "tool-rotate",
   templateUrl: "./rotate.component.html",
   styleUrls: [
-    "./rotate.component.css"
+    "./rotate.component.less"
   ]
 })
 
