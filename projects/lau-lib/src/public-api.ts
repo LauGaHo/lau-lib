@@ -14,4 +14,7 @@ export * from './tool/rotate/rotate.module';
 export * from './tool/loading-overlay/loading-overlay.component';
 export * from './tool/loading-overlay/loading-overlay.module';
 
+export * from './directive/drag-sort/drag-sort.directive';
+export * from './directive/drag-sort/drag-sort.module';
+
 export * from './lau-lib.module';
