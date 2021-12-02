@@ -1,10 +1,16 @@
-import {AfterViewInit, Directive, ElementRef, NgZone} from '@angular/core';
+import {AfterViewInit, Directive, ElementRef, EventEmitter, Input, NgZone, Output} from '@angular/core';
 
 @Directive({
   selector: '[drag-sort]'
 })
 
 export class DragSortDirective implements AfterViewInit {
+
+  // DOM 结构对应实际的数据结构
+  @Input() public datas: any[];
+
+  // 告知使用者，DOM 结构对应实际的数据结构发生了改变
+  @Output() public datasChange: EventEmitter<Array<any>> = new EventEmitter<Array<any>>();
 
   // 是否点击了可拖曳元素
   public isPointerDown: boolean = false;
@@ -21,10 +27,13 @@ export class DragSortDirective implements AfterViewInit {
   // 用于保存拖曳项 getBoundingClientRect 方法获取的数据
   public childRects: any[] = [];
   // 父容器调用 getBoudingClientRect 获取的数据
-  public fatherRect: any;
-  // 滚动条定时器
+  public fatherRect: {top: number, bottom: number, left: number, right: number};
+  // 滚动条上移定时器
   public scrollUpTimer: number;
+  // 滚动条下移定时器
   public scrollDownTimer: number;
+  // 全局 PointerEvent (因为定时器中的函数需要获取实时的鼠标位置，所以将鼠标事件设为全局，这样就可以获取实时的鼠标位置)
+  public pointerEvent: PointerEvent;
 
   constructor(
     private parent: ElementRef<HTMLElement>,
@@ -39,6 +48,16 @@ export class DragSortDirective implements AfterViewInit {
       this.bindListener();
     });
   }
+
+  /**
+   * 获取鼠标到父容器顶端的距离
+   */
+  public getUpDistance: () => number = () => this.fatherRect.top - this.pointerEvent.clientY;
+
+  /**
+   * 获取鼠标到父容器底部的距离
+   */
+  public getBottomDistance: () => number = () => this.pointerEvent.clientY - this.fatherRect.bottom;
 
   /**
    * 绑定事件监听器
@@ -69,7 +88,7 @@ export class DragSortDirective implements AfterViewInit {
   /**
    * 处理鼠标点击的动作
    * 此处需要定义称为箭头函数，因为 JS 中 this 指针指向
-   * @param e
+   * @param event
    */
   public handlePointerDown = (event: PointerEvent) => {
     // 如果是鼠标点击，且不是左键，直接返回
@@ -104,7 +123,7 @@ export class DragSortDirective implements AfterViewInit {
     // 根据 clone 的位置信息更新 clone 的实时位置
     this.clone.ele.style.transform = `translate(${this.clone.x}px, ${this.clone.y}px)`;
     document.body.appendChild(this.clone.ele);
-  };
+  }
 
   /**
    * 处理鼠标移动事件
@@ -117,6 +136,9 @@ export class DragSortDirective implements AfterViewInit {
       return;
     }
 
+    // 将当前 PointerEvenet 设置为组件内可见，为的是定时器可以获取实时的事件
+    this.pointerEvent = event;
+
     // 更新 clone 元素位置
     this.diff = {x: event.clientX - this.lastPointerMove.x, y: event.clientY - this.lastPointerMove.y};
     this.lastPointerMove = {x: event.clientX, y: event.clientY};
@@ -124,13 +146,14 @@ export class DragSortDirective implements AfterViewInit {
     this.clone.y += this.diff.y;
     this.clone.ele.style.transform = `translate(${this.clone.x}px, ${this.clone.y}px)`;
 
-    // 检测有无超过父容器的上边界
+    // 检测有无超过父容器的上下边界
     if (event.clientY < this.fatherRect.top) {
       if (this.scrollUpTimer == null) {
         this.scrollUpTimer = setInterval(() => {
-          // 操作滚动条向上滚动
           if (this.parent.nativeElement.scrollTop > 0) {
-            this.parent.nativeElement.scrollTop--
+            // 操作滚动条，自动上移滚动条
+            this.parent.nativeElement.scrollTop = this.parent.nativeElement.scrollTop - this.getUpDistance() > 0 ?
+              this.parent.nativeElement.scrollTop - this.getUpDistance() : 0;
           }
           else {
             this.removeInterval(['scrollUpTimer']);
@@ -139,13 +162,13 @@ export class DragSortDirective implements AfterViewInit {
       }
       return;
     }
-    // 检测有无超过父容器的下边界
     else if (event.clientY > this.fatherRect.bottom) {
       if (this.scrollDownTimer == null) {
         this.scrollDownTimer = setInterval(() => {
-          // 操作滚动条向下滚动
           if (this.parent.nativeElement.scrollTop + this.parent.nativeElement.clientHeight < this.parent.nativeElement.scrollHeight) {
-            this.parent.nativeElement.scrollTop++;
+            // 操作滚动条，自动下移滚动条
+            this.parent.nativeElement.scrollTop = this.parent.nativeElement.scrollTop + this.getBottomDistance() < this.parent.nativeElement.scrollHeight - this.parent.nativeElement.clientHeight ?
+              this.parent.nativeElement.scrollTop + this.getBottomDistance() : this.parent.nativeElement.scrollHeight - this.parent.nativeElement.clientHeight;
           }
           else {
             this.removeInterval(['scrollDownTimer']);
@@ -160,7 +183,6 @@ export class DragSortDirective implements AfterViewInit {
       this.removeInterval(['scrollUpTimer', 'scrollDownTimer']);
     }
 
-    // 遍历元素，寻找交换位置的元素，并完成位置交换
     for (let i = 0; i < this.childRects.length; i++) {
       // 碰撞检测
       if (event.clientX > this.childRects[i].left && event.clientX < this.childRects[i].right &&
@@ -184,6 +206,9 @@ export class DragSortDirective implements AfterViewInit {
           const lastDragRect = this.childRects[this.drag.lastIndex];
           const dropRect = this.childRects[this.drop.index];
           const lastDropRect = this.childRects[this.drop.lastIndex];
+          // todo 变换 datas 中的数据顺序，并发送 datas 改变事件
+          this.datas = [...this.datas.slice(0, this.drag.index), this.datas[this.drag.index], ...this.datas.slice(this.drag.index + 1)];
+          this.datasChange.emit(this.datas);
           // 获取完位置后，更新 drag 元素的 lastIndex 用于下一个轮回的逻辑
           this.drag.lastIndex = i;
           // 先行清空元素的过渡属性
@@ -204,7 +229,7 @@ export class DragSortDirective implements AfterViewInit {
         break;
       }
     }
-  };
+  }
 
   /**
    * 处理鼠标按钮松开回调
@@ -218,14 +243,14 @@ export class DragSortDirective implements AfterViewInit {
       this.removeActiveStyle(this.drag.ele);
       this.clone.ele.remove();
     }
-  };
+  }
 
   /**
    * 根据点击的 Target 获取 parentElement 下一级的元素
    * @param element
    */
   public getTargetElement(element: HTMLElement) {
-    if (element.parentElement == this.parent.nativeElement) {
+    if (element.parentElement === this.parent.nativeElement) {
       return element;
     }
     return this.getTargetElement(element.parentElement);
@@ -233,7 +258,7 @@ export class DragSortDirective implements AfterViewInit {
 
   /**
    * 移除定时器
-   * @param intervalName
+   * @param intervalNames
    */
   public removeInterval(intervalNames: string[]) {
     intervalNames.forEach(intervalName => {
