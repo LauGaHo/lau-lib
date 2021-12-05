@@ -29,7 +29,7 @@ export declare class DragComponent implements OnInit {
 }
 ```
 
-应用例子 (不使用 Handle ) 如下
+### **应用例子 (不使用 Handle ) 如下**
 
 ```html
 // element.component.html
@@ -67,7 +67,9 @@ export class ElementComponent {
 }
 ```
 
-应用例子 (  使用 Handle ) 如下
+![alt](https://cdn.jsdelivr.net/gh/LauGaHo/blog-img@master/uPic/drag-gif.gif)
+
+### **应用例子 (  使用 Handle ) 如下**
 
 ```html
 // element.component.html
@@ -104,6 +106,8 @@ export class ElementComponent {
   
 }
 ```
+
+![alt](https://cdn.jsdelivr.net/gh/LauGaHo/blog-img@master/uPic/drag-with-handler.gif)
 
 ## ResizeComponent
 
@@ -144,7 +148,7 @@ export declare class ResizeComponent implements OnInit {
 }
 ```
 
-应用例子
+### **应用例子**
 
 ```html
 <div #divElement 
@@ -181,6 +185,8 @@ export class ElementComponent {
 }
 ```
 
+![alt](https://cdn.jsdelivr.net/gh/LauGaHo/blog-img@master/uPic/resize.gif)
+
 ## RotateComponent
 
 `RotateComponent` 对应实现了 `DOM` 元素的旋转，对应的 API 如下
@@ -203,7 +209,7 @@ export declare class RotateComponent implements OnInit {
 }
 ```
 
-示例如下
+### **示例如下**
 
 ```html
 <div #divElement 
@@ -236,5 +242,5 @@ export class RotateComponent {
 }
 ```
 
-
+![alt](https://cdn.jsdelivr.net/gh/LauGaHo/blog-img@master/uPic/rotate.gif)
 
