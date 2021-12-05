@@ -6,30 +6,30 @@
 
 ```typescript
 export declare class DragComponent implements OnInit {
-    private ngZone;
-    constructor(ngZone: NgZone);
-    draggable: boolean;
-    // Input 属性：是否需要展示方形四边的拖曳手柄，如设置了 contentEditable 的元素需要拖曳手柄
-    showHandle: boolean;
-    // Input 属性：当 showHandle 为 true 时，selected 绑定元素是否被选中，选中才显示 handle
-    selected: boolean;
-    // Input 属性：拖曳进行中的回调函数
-    dragMoving: (deltaX: number, deltaY: number) => void;
-    // Input 属性：拖曳结束后的回调函数
-    dragEnd: () => void;
-    // Input 属性：表示需要拖曳的元素
-    dragElement: HTMLElement;
-    // Output 属性：点击 Handle 向外发射事件
-    clickHandle: EventEmitter<any>;
-    /**
-     * 由于元素的拖动没有必要触发Angular全局的变更检测
-     * 所以将元素拖拽相关代码放在ngZone之外运行
-     */
-    ngOnInit(): void;
+  private ngZone;
+  constructor(ngZone: NgZone);
+  draggable: boolean;
+  // Input 属性：是否需要展示方形四边的拖曳手柄，如设置了 contentEditable 的元素需要拖曳手柄
+  showHandle: boolean;
+  // Input 属性：当 showHandle 为 true 时，selected 绑定元素是否被选中，选中才显示 handle
+  selected: boolean;
+  // Input 属性：拖曳进行中的回调函数
+  dragMoving: (deltaX: number, deltaY: number) => void;
+  // Input 属性：拖曳结束后的回调函数
+  dragEnd: () => void;
+  // Input 属性：表示需要拖曳的元素
+  dragElement: HTMLElement;
+  // Output 属性：点击 Handle 向外发射事件
+  clickHandle: EventEmitter<any>;
+  /**
+   * 由于元素的拖动没有必要触发Angular全局的变更检测
+   * 所以将元素拖拽相关代码放在ngZone之外运行
+   */
+  ngOnInit(): void;
 }
 ```
 
-应用例子 (不使用 Handle ) 如下
+### **应用例子 (不使用 Handle ) 如下**
 
 ```html
 // element.component.html
@@ -67,7 +67,9 @@ export class ElementComponent {
 }
 ```
 
-应用例子 (  使用 Handle ) 如下
+![alt](https://cdn.jsdelivr.net/gh/LauGaHo/blog-img@master/uPic/drag-gif.gif)
+
+### **应用例子 (  使用 Handle ) 如下**
 
 ```html
 // element.component.html
@@ -104,6 +106,8 @@ export class ElementComponent {
   
 }
 ```
+
+![alt](https://cdn.jsdelivr.net/gh/LauGaHo/blog-img@master/uPic/drag-with-handler.gif)
 
 ## ResizeComponent
 
@@ -144,7 +148,7 @@ export declare class ResizeComponent implements OnInit {
 }
 ```
 
-应用例子
+### **应用例子**
 
 ```html
 <div #divElement 
@@ -181,6 +185,8 @@ export class ElementComponent {
 }
 ```
 
+![alt](https://cdn.jsdelivr.net/gh/LauGaHo/blog-img@master/uPic/resize.gif)
+
 ## RotateComponent
 
 `RotateComponent` 对应实现了 `DOM` 元素的旋转，对应的 API 如下
@@ -203,7 +209,7 @@ export declare class RotateComponent implements OnInit {
 }
 ```
 
-示例如下
+### **示例如下**
 
 ```html
 <div #divElement 
@@ -236,5 +242,72 @@ export class RotateComponent {
 }
 ```
 
+![alt](https://cdn.jsdelivr.net/gh/LauGaHo/blog-img@master/uPic/rotate.gif)
 
 
+
+## DragSortDirective
+
+`DragSortDirective` 实现了拖曳排序功能
+
+```typescript
+export declare class DragSortDirective {
+  	private parent;
+    private ngZone;
+  	// Input 属性，这里是容器内元素对应的 Input 属性
+    datas: any[];
+    datasChange: EventEmitter<Array<any>>;
+    isPointerDown: boolean;
+    diff: {
+        x: number;
+        y: number;
+    };
+    drag: {
+        ele: any;
+        index: number;
+        lastIndex: number;
+    };
+    drop: {
+        ele: any;
+        index: number;
+        lastIndex: number;
+    };
+    clone: {
+        ele: any;
+        x: 0;
+        y: 0;
+    };
+    lastPointerMove: {
+        x: number;
+        y: number;
+    };
+    childRects: any[];
+    fatherRect: {
+        top: number;
+        bottom: number;
+        left: number;
+        right: number;
+    };
+    scrollUpTimer: number;
+    scrollDownTimer: number;
+    pointerEvent: PointerEvent;
+}
+```
+
+### **示例如下**
+
+```html
+<div #fatherContainer drag-sort [datas]="data">
+  <div #son1></div>
+  <div #son2></div>
+  <div #son3></div>
+  <div #son4></div>
+  <div #son5></div>
+  <div #son6></div>
+  <div #son7></div>
+  <div #son8></div>
+  <div #son9></div>
+</div>
+```
+
+![alt](https://cdn.jsdelivr.net/gh/LauGaHo/blog-img@master/uPic/drag-sort.gif)

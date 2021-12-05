@@ -1,8 +1,8 @@
 {
   "name": "lau-lib",
   "author": "laugaho",
-  "version": "2.0.0",
-  "description": "Angular drag, resize, rotate library(Angular 拖曳移动、拖曳缩放、拖曳旋转工具库)",
+  "version": "3.0.0",
+  "description": "Angular drag, resize, rotate, drag-sort library(Angular 拖曳移动、拖曳缩放、拖曳旋转、拖曳排序工具库)",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -13,10 +13,12 @@
     "drag",
     "resize",
     "rotate",
+    "drag-sort",
     "utils",
     "Angular 拖曳移动",
     "Angular 拖曳缩放",
     "Angular 拖曳旋转",
+    "Angular 拖曳排序",
     "Angular 工具库"
   ],
   "dependencies": {

@@ -244,3 +244,70 @@ export class RotateComponent {
 
 ![alt](https://cdn.jsdelivr.net/gh/LauGaHo/blog-img@master/uPic/rotate.gif)
 
+
+
+## DragSortDirective
+
+`DragSortDirective` 实现了拖曳排序功能
+
+```typescript
+export declare class DragSortDirective {
+  	private parent;
+    private ngZone;
+  	// Input 属性，这里是容器内元素对应的 Input 属性
+    datas: any[];
+    datasChange: EventEmitter<Array<any>>;
+    isPointerDown: boolean;
+    diff: {
+        x: number;
+        y: number;
+    };
+    drag: {
+        ele: any;
+        index: number;
+        lastIndex: number;
+    };
+    drop: {
+        ele: any;
+        index: number;
+        lastIndex: number;
+    };
+    clone: {
+        ele: any;
+        x: 0;
+        y: 0;
+    };
+    lastPointerMove: {
+        x: number;
+        y: number;
+    };
+    childRects: any[];
+    fatherRect: {
+        top: number;
+        bottom: number;
+        left: number;
+        right: number;
+    };
+    scrollUpTimer: number;
+    scrollDownTimer: number;
+    pointerEvent: PointerEvent;
+}
+```
+
+### **示例如下**
+
+```html
+<div #fatherContainer drag-sort [datas]="data">
+  <div #son1></div>
+  <div #son2></div>
+  <div #son3></div>
+  <div #son4></div>
+  <div #son5></div>
+  <div #son6></div>
+  <div #son7></div>
+  <div #son8></div>
+  <div #son9></div>
+</div>
+```
+
+![alt](https://cdn.jsdelivr.net/gh/LauGaHo/blog-img@master/uPic/drag-sort.gif)
