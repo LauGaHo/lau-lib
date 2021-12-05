@@ -310,4 +310,4 @@ export declare class DragSortDirective {
 </div>
 ```
 
-![alt](https://cdn.jsdelivr.net/gh/LauGaHo/blog-img@master/uPic/drag-sort.gif)
+![alt](https://cdn.jsdelivr.net/gh/LauGaHo/blog-img@master/uPic/drag-sort1.gif)
