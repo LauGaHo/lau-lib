@@ -19,13 +19,13 @@
           "options": {
             "tsConfig": "projects/lau-lib/tsconfig.lib.json",
             "project": "projects/lau-lib/ng-package.json"
-          }
-        ,          "configurations": {
+          },
+          "configurations": {
             "production": {
               "tsConfig": "projects/lau-lib/tsconfig.lib.prod.json"
             }
           }
-},
+        },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
@@ -163,6 +163,7 @@
           }
         }
       }
-    }},
+    }
+  },
   "defaultProject": "lau-lib-demo"
 }
